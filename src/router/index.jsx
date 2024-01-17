@@ -8,10 +8,11 @@ const index = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/home" replace="true"></Navigate>} />
+          <Route path="/" exact element={<Navigate to="/home" replace="true"></Navigate>} />
           <Route path="/home" element={<Home />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />
+          <Route path="*" element={<p>Page not found</p>} />
         </Routes>
       </BrowserRouter>
     </>
