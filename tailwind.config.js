@@ -2,7 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "airbnb-cereal": ["Airbnb Cereal App", "sans-serif"],
+      },
+      colors: {
+        primary: "#EFC81A",
+      },
+    },
   },
   plugins: [],
 };
