@@ -1,18 +1,37 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Footer from "../../components/footer";
+import Footer from "../../components/Footer";
 import IconSearch from "../../assets/img/landingPage/icon-search.svg";
 import imageLanding from "../../assets/img/landingPage/1.svg";
 import ImagePopular from "../../assets/img/landingPage/2.svg";
 import ImageNewRecipe from "../../assets/img/landingPage/3.svg";
-import ImagePopular1 from "../../assets/img/landingPage/4.svg";
-import ImagePopular2 from "../../assets/img/landingPage/5.svg";
-import ImagePopular3 from "../../assets/img/landingPage/6.svg";
-import ImagePopular4 from "../../assets/img/landingPage/7.svg";
-import ImagePopular5 from "../../assets/img/landingPage/8.svg";
-import ImagePopular6 from "../../assets/img/landingPage/9.svg";
 
 function Home() {
+  const [recipes, setRecipes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const recipesPerPage = 6;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://mama-recipe-backend.vercel.app/recipes?page=${currentPage}&limit=${recipesPerPage}`);
+        setRecipes(response.data.data);
+        setTotalPages(response.data.totalPages); // Update total pages here
+      } catch (error) {
+        console.error("Error fetching recipes:", error.message);
+      }
+    };
+
+    fetchData();
+  }, [currentPage, totalPages]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
   return (
     <>
       <Navbar />
@@ -100,48 +119,64 @@ function Home() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-14">
-          <Link to="/recipe" className="relative">
-            <img src={ImagePopular1} alt="img-4" />
-            <div className="w-full absolute left-0 bottom-5 bg-[rgba(255,255,255,.3)]">
-              <p className="text-[#3F3A3A] font-bold text-xl xl:text-2xl px-5">Chiken Kare</p>
+          {recipes.map((recipe) => (
+            <div key={recipe.id}>
+              <Link to={`/recipes/${recipe.id}`} className="relative">
+                <img src={recipe.image} alt={recipe.title} />
+                <div className="w-full absolute left-0 bottom-5 bg-[rgba(255,255,255,.3)]">
+                  <p className="text-[#3F3A3A] font-bold text-xl xl:text-2xl px-5">{recipe.title}</p>
+                </div>
+              </Link>
             </div>
-          </Link>
-
-          <Link to="/recipe" className="relative">
-            <img src={ImagePopular2} alt="img-5" />
-            <div className="w-full absolute left-0 bottom-5 bg-[rgba(255,255,255,.3)]">
-              <p className="text-[#3F3A3A] font-bold text-xl xl:text-2xl px-5">Bomb Chicken</p>
-            </div>
-          </Link>
-
-          <Link to="/recipe" className="relative">
-            <img src={ImagePopular3} alt="img-6" />
-            <div className="w-full absolute left-0 bottom-5 bg-[rgba(255,255,255,.3)]">
-              <p className="text-[#3F3A3A] font-bold text-xl xl:text-2xl px-5">Banana Smothie Pop</p>
-            </div>
-          </Link>
-
-          <Link to="/recipe" className="relative">
-            <img src={ImagePopular4} alt="img-7" />
-            <div className="w-full absolute left-0 bottom-5 bg-[rgba(255,255,255,.3)]">
-              <p className="text-[#3F3A3A] font-bold text-xl xl:text-2xl px-5">Coffe Lava Cake</p>
-            </div>
-          </Link>
-
-          <Link to="recipe" className="relative">
-            <img src={ImagePopular5} alt="img-8" />
-            <div className="w-full absolute left-0 bottom-5 bg-[rgba(255,255,255,.3)]">
-              <p className="text-[#3F3A3A] font-bold text-xl xl:text-2xl px-5">Sugar Salmon</p>
-            </div>
-          </Link>
-
-          <Link to="recipe" className="relative">
-            <img src={ImagePopular6} alt="img-9" />
-            <div className="w-full absolute left-0 bottom-5 bg-[rgba(255,255,255,.3)]">
-              <p className="text-[#3F3A3A] font-bold text-xl xl:text-2xl px-5">Indian Salad</p>
-            </div>
-          </Link>
+          ))}
         </div>
+
+        {/* Pagination */}
+        <div className="flex justify-between items-center mt-4">
+          <div>
+            <p className="text-sm hidden">
+              Page {currentPage} of {totalPages}
+            </p>
+          </div>
+
+          <div className="flex items-center">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-4 py-2 rounded-md mx-1 ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-300 text-gray-500 hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"}`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+
+          <div>
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-md mr-2 ${currentPage === 1 ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"}`}
+            >
+              Previous
+            </button>
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages || recipes.length < recipesPerPage}
+              className={`px-4 py-2 rounded-md ml-2 ${
+                currentPage === totalPages || recipes.length < recipesPerPage ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"
+              }`}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+
+        {/* {Array.from({ length: totalPages }, (_, index) => (
+            <button key={index + 1} className={`mx-2 px-4 py-2 rounded-md ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-700"}`} onClick={() => handlePageChange(index + 1)}>
+              {index + 1}
+            </button>
+          ))} */}
       </section>
       {/* Popular Recipe End */}
 
