@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
-import iconUser from "../../assets/img/icon/User icon.svg";
 
 function Navbar() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -51,7 +50,7 @@ function Navbar() {
 
         <Link to="/auth/login" className="flex items-center gap-1 text-white">
           <div>
-            <img src={iconUser} width="32" alt="icon-user" className="xl:w-10" />
+            <img src="/img/icon/User icon.svg" width="32" alt="icon-user" className="xl:w-10" />
           </div>
           {/* If in home text-white */}
 
