@@ -3,6 +3,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import RecipesDetail from "../pages/Recipes/RecipesDetail";
+import NotFound from "../pages/NotFound";
 const Router = () => {
   return (
     <BrowserRouter>
@@ -12,7 +13,7 @@ const Router = () => {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/recipes/:id" element={<RecipesDetail />} />
-        <Route path="*" element={<p>Page not found</p>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
