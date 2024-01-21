@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -132,43 +132,65 @@ function Home() {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center mt-4">
-          <div>
-            <p className="text-sm hidden">
-              Page {currentPage} of {totalPages}
-            </p>
-          </div>
-
-          <div className="flex items-center">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 rounded-md mx-1 ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-300 text-gray-500 hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"}`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
-
-          <div>
+        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+          <div className="flex flex-1 justify-between sm:hidden">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`px-4 py-2 rounded-md mr-2 ${currentPage === 1 ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"}`}
+              className={`relative inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${
+                currentPage === 1 ? "text-gray-500 cursor-not-allowed" : "text-primary hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"
+              }`}
             >
+              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
               Previous
             </button>
-
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages || recipes.length < recipesPerPage}
-              className={`px-4 py-2 rounded-md ml-2 ${
-                currentPage === totalPages || recipes.length < recipesPerPage ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-primary text-white hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"
+              className={`relative ml-3 inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${
+                currentPage === totalPages || recipes.length < recipesPerPage ? "text-gray-500 cursor-not-allowed" : "text-primary hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"
               }`}
             >
               Next
+              <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
             </button>
+          </div>
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm text-gray-700">
+                Showing <span className="font-medium">{(currentPage - 1) * recipesPerPage + 1}</span> to <span className="font-medium">{Math.min(currentPage * recipesPerPage, recipes.length)}</span> of{" "}
+                <span className="font-medium">{recipes.length}</span> results
+              </p>
+            </div>
+            <div>
+              <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-none focus:ring focus:border-primary`}
+                >
+                  <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
+                      currentPage === index + 1 ? "text-white bg-primary" : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-none focus:ring focus:border-primary"
+                    } `}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages || recipes.length < recipesPerPage}
+                  className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-none focus:ring focus:border-primary`}
+                >
+                  <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </nav>
+            </div>
           </div>
         </div>
 
