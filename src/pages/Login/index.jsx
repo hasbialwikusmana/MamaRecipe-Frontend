@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { login } from "../../services/api";
+import * as api from "../../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const Login = () => {
         return;
       }
 
-      const response = await login(email, password);
+      const response = await api.login(email, password);
 
       localStorage.setItem("token", response.data.token);
 
