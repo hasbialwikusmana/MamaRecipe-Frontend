@@ -59,10 +59,6 @@ function Navbar() {
     setIsDropdownOpen(false);
   };
 
-  // const handleProfile = () => {
-  //   navigate("/profile");
-  //   setIsDropdownOpen(false);
-  // };
   return (
     <header className="w-full absolute top-0 left-0 z-50">
       <div className="flex items-center justify-between px-5 md:px-16 lg:px-24 h-24">
@@ -70,8 +66,8 @@ function Navbar() {
           <NavLink to="/" className="text-gray-900 hover:text-primary">
             Home
           </NavLink>
-          <NavLink to="/recipes" className={`${displayMenu} text-gray-900 hover:text-primary`}>
-            Add Recipes
+          <NavLink to="/recipes/list" className={`${displayMenu} text-gray-900 hover:text-primary`}>
+            Recipes
           </NavLink>
           <NavLink to="/profile" className={`${displayMenu} text-gray-900 hover:text-primary`}>
             Profile
@@ -82,36 +78,16 @@ function Navbar() {
           <FaBars className="text-2xl text-gray-900 hover:text-primary hidden" />
         </button>
 
-        {/* <div className={`md:hidden absolute py-5 bg-white border shadow-xl rounded-lg max-w-[250px] w-full left-8 top-20 z-10 ${isMenuOpen ? "" : "hidden"}`}>
-          <ul className="block">
-            <li className="group">
-              <NavLink to="/" className="flex text-base text-gray-900 py-2 mx-8 group-hover:text-primary">
-                Home
-              </NavLink>
-            </li>
-            <li className="group">
-              <NavLink to="/recipe-add" className={`${displayMenu}text-base text-gray-900 py-2 mx-8 group-hover:text-primary`}>
-                Add Recipe
-              </NavLink>
-            </li>
-            <li className="group">
-              <NavLink to="/profile" className={`${displayMenu}text-base text-gray-900 py-2 mx-8 group-hover:text-primary`}>
-                Profile
-              </NavLink>
-            </li>
-          </ul>
-        </div> */}
-
         <div style={{ position: "relative" }}>
           <div onClick={toggleDropdown}>
             {isLogin ? (
               users.image ? (
-                <img src={users.image} alt="icon-user" className="xl:w-12 rounded-full cursor-pointer" />
+                <img src={users.image} height="50" width="50" alt="icon-user" className=" rounded-full cursor-pointer" />
               ) : (
-                <img src="/img/icon/User icon.svg" alt="icon-user" className="xl:w-12 cursor-pointer" />
+                <img src="/img/icon/User icon.svg" height="50" width="50" alt="icon-user" className="xl:w-12 cursor-pointer" />
               )
             ) : (
-              <img src="/img/icon/User icon.svg" alt="icon-user" className="xl:w-12 cursor-pointer" />
+              <img src="/img/icon/User icon.svg" height="50" width="50" alt="icon-user" className="xl:w-12 cursor-pointer" />
             )}
           </div>
           {isDropdownOpen && (
@@ -124,9 +100,9 @@ function Navbar() {
                   </NavLink>
                 </li>
                 <li className="group xl:hidden lg:hidden  md:hidden">
-                  <NavLink to="/recipe-add" className="flex items-center py-3 px-6 cursor-pointer hover:text-primary">
+                  <NavLink to="/recipes/list" className="flex items-center py-3 px-6 cursor-pointer hover:text-primary">
                     <FaBook className="mr-2" />
-                    Add Recipe
+                    Recipe
                   </NavLink>
                 </li>
                 <li className="group xl:hidden lg:hidden md:hidden">
