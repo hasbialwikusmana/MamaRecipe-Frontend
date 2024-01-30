@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight, FaBookmark, FaPlus, FaThumbsDown, FaThumbsUp } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaBookmark, FaPlus, FaThumbsUp } from "react-icons/fa";
 import moment from "moment";
 import Swal from "sweetalert2";
 
@@ -13,8 +13,6 @@ const ListRecipes = () => {
   const [orderOption, setOrderOption] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const token = localStorage.getItem("token");
@@ -93,28 +91,15 @@ const ListRecipes = () => {
           },
         }
       );
-      // Ambil ulang resep setelah mengirim like
-      const response = await axios.get(`${baseURL}/recipes`, {
-        params: {
-          ...Object.fromEntries(searchParams),
-          sortBy: sortOption,
-          order: orderOption,
-          page,
-          limit,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRecipes(response.data.data);
+
+      // Update the local state to reflect the new like status
+      setRecipes((prevRecipes) => prevRecipes.map((recipe) => (recipe.id === id ? { ...recipe, isLiked: true, likeCount: recipe.likeCount + 1 } : recipe)));
       // Show SweetAlert2 toast for successful like
       Swal.fire({
         icon: "success",
         title: "Liked!",
         text: "You can see your liked recipes in the Liked Recipes page",
       });
-
-      setIsLiked(true);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -132,27 +117,14 @@ const ListRecipes = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      // Ambil ulang resep setelah mengirim unlike
-      const response = await axios.get(`${baseURL}/recipes`, {
-        params: {
-          ...Object.fromEntries(searchParams),
-          sortBy: sortOption,
-          order: orderOption,
-          page,
-          limit,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRecipes(response.data.data);
+      // Update the local state to reflect the new like status
+      setRecipes((prevRecipes) => prevRecipes.map((recipe) => (recipe.id === id ? { ...recipe, isLiked: false, likeCount: recipe.likeCount - 1 } : recipe)));
       // Show SweetAlert2 toast for successful unlike
       Swal.fire({
         icon: "success",
         title: "Unliked!",
         text: "You can like this recipe again",
       });
-      setIsLiked(false);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -182,20 +154,8 @@ const ListRecipes = () => {
         text: "You can see your saved recipes in the Saved Recipes page",
       });
 
-      const response = await axios.get(`${baseURL}/recipes`, {
-        params: {
-          ...Object.fromEntries(searchParams),
-          sortBy: sortOption,
-          order: orderOption,
-          page,
-          limit,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRecipes(response.data.data);
-      setIsSaved(true);
+      // Update the local state to reflect the new save status
+      setRecipes((prevRecipes) => prevRecipes.map((recipe) => (recipe.id === id ? { ...recipe, isSaved: true, saveCount: recipe.saveCount + 1 } : recipe)));
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -214,6 +174,8 @@ const ListRecipes = () => {
         },
       });
 
+      // Update the local state to reflect the new save status
+      setRecipes((prevRecipes) => prevRecipes.map((recipe) => (recipe.id === id ? { ...recipe, isSaved: false, saveCount: recipe.saveCount - 1 } : recipe)));
       // Show SweetAlert2 toast for successful unsave
       Swal.fire({
         icon: "success",
@@ -223,20 +185,6 @@ const ListRecipes = () => {
         showConfirmButton: false,
         timer: 3000,
       }); // Ambil ulang resep setelah mengirim like
-      const response = await axios.get(`${baseURL}/recipes`, {
-        params: {
-          ...Object.fromEntries(searchParams),
-          sortBy: sortOption,
-          order: orderOption,
-          page,
-          limit,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setRecipes(response.data.data);
-      setIsSaved(false);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -316,10 +264,9 @@ const ListRecipes = () => {
                     {/* Like and Save Buttons */}
                     <div className="absolute top-2 right-2 flex space-x-2 z-10">
                       {/* Tombol Like dan Unlike */}
-                      {/* Like and Unlike Buttons */}
-                      {isLiked ? (
+                      {recipe.isLiked ? (
                         <button className="flex items-center space-x-1 bg-primary text-white p-1 rounded-md hover:bg-secondary bg-opacity-75" onClick={() => handleUnlike(recipe.id)}>
-                          <FaThumbsDown className="w-4 h-4" />
+                          <FaThumbsUp className="w-4 h-4" />
                           <span>{recipe.likeCount}</span>
                         </button>
                       ) : (
@@ -329,8 +276,8 @@ const ListRecipes = () => {
                         </button>
                       )}
 
-                      {/* Save and Unsave Buttons */}
-                      {isSaved ? (
+                      {/* Save Button */}
+                      {recipe.isSaved ? (
                         <button className="flex items-center space-x-1 bg-white p-1 rounded-md text-primary hover:text-red-500 bg-opacity-75" onClick={() => handleUnsave(recipe.id)}>
                           <FaBookmark className="w-4 h-4" />
                           <span>{recipe.saveCount}</span>
