@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import { Link, useNavigate } from "react-router-dom";
 import IconSearch from "../../assets/img/landingPage/icon-search.svg";
 import imageLanding from "../../assets/img/landingPage/1.svg";
 import ImagePopular from "../../assets/img/landingPage/2.svg";
@@ -11,37 +8,66 @@ import ImageNewRecipe from "../../assets/img/landingPage/3.svg";
 
 function Home() {
   const [recipes, setRecipes] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const recipesPerPage = 6;
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://mama-recipe-backend.vercel.app/recipes?page=${currentPage}&limit=${recipesPerPage}`);
+        const baseURL = import.meta.env.VITE_API_URL;
+        const response = await axios.get(`${baseURL}/recipes/popularRecipes?page=1&limit=6sortBy=saveCount&order=desc`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         setRecipes(response.data.data);
-        setTotalPages(response.data.totalPages); // Update total pages here
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching recipes:", error.message);
       }
     };
 
     fetchData();
-  }, [currentPage, totalPages]);
+  }, [token]);
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+  const handleSearch = () => {
+    navigate(`/recipes/list?search=${searchQuery}`);
   };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      navigate(`/recipes/list?search=${searchQuery}`);
+    }
+  };
+
+  const SkeletonCard = () => (
+    <div className="rounded-md overflow-hidden bg-white shadow-md animate-pulse">
+      <div className="w-full h-56 bg-gray-300"></div>
+      <div className="p-4">
+        <div className="w-2/3 h-4 mb-2 bg-gray-300"></div>
+        <div className="w-1/2 h-4 bg-gray-300"></div>
+      </div>
+    </div>
+  );
+
   return (
     <>
-      <Navbar />
-
-      <section className="max-[500px]:h-[30rem] h-[26rem] md:h-[30rem] lg:h-[40rem] xl:h-[52rem] relative">
+      <section className="max-h-[52rem] h-[26rem] md:h-[30rem] lg:h-[40rem] xl:h-[52rem] relative">
         <div className="flex w-full h-full">
           <div className="w-[73%] h-full flex flex-col sm:justify-center">
             <div className="sm:hidden relative mt-20 ms-14">
-              <input type="text" className="bg-[#EFEFEF] rounded-md w-full p-3 focus:outline-primary indent-7 text-sm" placeholder="Search Restaurant, Food" />
-              <button className="absolute top-3.5 left-4 w-3.5 active:w-5 active:top-3 active:left-3">
+              <input
+                type="text"
+                className="bg-[#EFEFEF] rounded-md w-52 p-3 focus:outline-primary indent-7 text-sm"
+                placeholder="Search Restaurant, Food"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={handleKeyPress}
+              />
+              <button className="absolute top-3.5 left-4 w-3.5 active:w-5 active:top-3 active:left-3" onClick={handleSearch}>
                 <img src={IconSearch} alt="icon-search" />
               </button>
             </div>
@@ -49,21 +75,24 @@ function Home() {
               Discover Recipe <br /> & Delicious Food
             </h2>
             <div className="relative max-sm:hidden w-48 sm:w-72 lg:w-1/2 rounded-md ms-10 md:ms-16 xl:ms-24 mt-5">
-              <input type="text" className="bg-[#EFEFEF] rounded-md xl:rounded-lg w-full p-3 xl:p-5 focus:outline-primary indent-7 text-sm" placeholder="Search Restaurant, Food" />
-              <button className="absolute top-3.5 left-4 w-3.5 xl:w-4 xl:left-6 xl:top-5 active:w-5 active:top-3 active:left-3">
+              <input
+                type="text"
+                className="bg-[#EFEFEF] rounded-md xl:rounded-lg w-full p-3 xl:p-5 focus:outline-primary indent-7 text-sm"
+                placeholder="Search Restaurant, Food"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={handleKeyPress}
+              />
+              <button className="absolute top-3.5 left-4 w-3.5 xl:w-4 xl:left-6 xl:top-5 active:w-5 active:top-3 active:left-3" onClick={handleSearch}>
                 <img src={IconSearch} alt="icon-search" />
               </button>
             </div>
           </div>
-          <div className="bg-primary w-[27%] h-full"></div>
+          <div className="bg-primary  w-[27%] h-full"></div>
         </div>
-        <img
-          className="absolute w-48 sm:w-56 md:w-64 lg:w-96 xl:w-[36.5%] right-12 sm:right-16 md:right-28 xl:right-24 max-[500px]:top-52 top-40 sm:top-24 md:top-32 xl:top-36 rounded-md"
-          src={imageLanding}
-          // src={recipes[0] ? recipes[0].image : ''}
-          alt="img-landing"
-        />
+        <img className="absolute w-48 sm:w-56 md:w-64 lg:w-96 xl:w-[36.5%] right-12 sm:right-16 md:right-28 xl:right-24 max-[500px]:top-52 top-40 sm:top-24 md:top-32 xl:top-36 rounded-md" src={imageLanding} alt="img-landing" />
       </section>
+
       {/* Search End */}
 
       {/* Popular For You ! Start */}
@@ -80,7 +109,7 @@ function Home() {
             <h2 className="text-[#3F3A3A] text-xl md:text-2xl lg:text-3xl xl:text-[2.7rem]/[3.5rem] font-bold">Healthy Bone Broth Ramen (Quick & Easy)</h2>
             <div className="w-10 xl:w-20 h-2 border-b border-[#6F6A40]"></div>
             <p className="text-[#3F3A3A] mt-3 mb-8 text-sm xl:text-xl ">Quick + Easy Chicken Bone Broth Ramen Healthy chicken ramen in a hurry? That&apos;s right!</p>
-            <Link to="/recipe" className="bg-primary text-xs px-[1.35rem] py-3 xl:px-[2.65rem] xl:py-4 rounded xl:rounded-md text-white tracking-wider xl:tracking-widest active:ring md:w-28 xl:w-40">
+            <Link to="/recipes/list" className="bg-primary text-xs px-[1.35rem] py-3 xl:px-[2.65rem] xl:py-4 rounded xl:rounded-md text-white tracking-wider xl:tracking-widest active:ring md:w-28 xl:w-40">
               Learn More
             </Link>
           </div>
@@ -103,7 +132,7 @@ function Home() {
             <h2 className="text-[#3F3A3A] text-xl md:text-2xl lg:text-3xl xl:text-[2.7rem]/[3.5rem] font-bold">Healthy Bone Broth Ramen (Quick & Easy)</h2>
             <div className="w-10 xl:w-20 h-2 border-b border-[#6F6A40]"></div>
             <p className="text-[#3F3A3A] mt-3 mb-8 text-sm xl:text-xl">Quick + Easy Chicken Bone Broth Ramen Healthy chicken ramen in a hurry? That&apos;s right!</p>
-            <Link to="/recipe" className="bg-primary text-xs px-[1.35rem] py-3 xl:px-[2.65rem] xl:py-4 rounded xl:rounded-md text-white tracking-wider xl:tracking-widest active:ring md:w-28 xl:w-40">
+            <Link to="/recipes/list" className="bg-primary text-xs px-[1.35rem] py-3 xl:px-[2.65rem] xl:py-4 rounded xl:rounded-md text-white tracking-wider xl:tracking-widest active:ring md:w-28 xl:w-40">
               Learn more
             </Link>
           </div>
@@ -119,90 +148,22 @@ function Home() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-14">
-          {recipes.map((recipe) => (
-            <div key={recipe.id}>
-              <Link to={`/recipes/${recipe.id}`} className="relative">
-                <img src={recipe.image} alt={recipe.title} />
-                <div className="w-full absolute left-0 bottom-5 bg-[rgba(255,255,255,.3)]">
-                  <p className="text-[#3F3A3A] font-bold text-xl xl:text-2xl px-5">{recipe.title}</p>
+          {loading
+            ? // Tampilkan skeleton loader untuk setiap resep dalam bentuk kartu
+              Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />)
+            : recipes.map((recipe) => (
+                <div key={recipe.id} className="relative rounded-md overflow-hidden bg-white shadow-md">
+                  <Link to={`/recipes/detail/${recipe.id}`} className="block">
+                    {/* Image */}
+                    <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
+                    {/* Title */}
+                    <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60  text-white  font-bold text-xl xl:text-xl px-5 ">{recipe.title}</div>
+                  </Link>
                 </div>
-              </Link>
-            </div>
-          ))}
+              ))}
         </div>
-
-        {/* Pagination */}
-        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-          <div className="flex flex-1 justify-between sm:hidden">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className={`relative inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${
-                currentPage === 1 ? "text-gray-500 cursor-not-allowed" : "text-primary hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"
-              }`}
-            >
-              <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-              Previous
-            </button>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages || recipes.length < recipesPerPage}
-              className={`relative ml-3 inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${
-                currentPage === totalPages || recipes.length < recipesPerPage ? "text-gray-500 cursor-not-allowed" : "text-primary hover:bg-primary-dark focus:outline-none focus:ring focus:border-primary"
-              }`}
-            >
-              Next
-              <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700">
-                Showing <span className="font-medium">{(currentPage - 1) * recipesPerPage + 1}</span> to <span className="font-medium">{Math.min(currentPage * recipesPerPage, recipes.length)}</span> of{" "}
-                <span className="font-medium">{recipes.length}</span> results
-              </p>
-            </div>
-            <div>
-              <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                <button
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-none focus:ring focus:border-primary`}
-                >
-                  <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <button
-                    key={index + 1}
-                    onClick={() => handlePageChange(index + 1)}
-                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-                      currentPage === index + 1 ? "text-white bg-primary" : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-none focus:ring focus:border-primary"
-                    } `}
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-                <button
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages || recipes.length < recipesPerPage}
-                  className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-none focus:ring focus:border-primary`}
-                >
-                  <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-              </nav>
-            </div>
-          </div>
-        </div>
-
-        {/* {Array.from({ length: totalPages }, (_, index) => (
-            <button key={index + 1} className={`mx-2 px-4 py-2 rounded-md ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-700"}`} onClick={() => handlePageChange(index + 1)}>
-              {index + 1}
-            </button>
-          ))} */}
       </section>
       {/* Popular Recipe End */}
-
-      <Footer />
     </>
   );
 }
