@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaBars, FaHome, FaBook, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { FaBars, FaHome, FaBook, FaUser, FaSignOutAlt, FaTimes } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -79,16 +79,33 @@ function Navbar() {
         </button>
 
         <div style={{ position: "relative" }}>
-          <div onClick={toggleDropdown}>
+          <button id="hamburger" name="hamburger" type="button" onClick={isLogin ? toggleDropdown : null} className="block md:hidden">
             {isLogin ? (
-              users.image ? (
-                <img src={users.image} height="50" width="50" alt="icon-user" className=" rounded-full cursor-pointer" />
+              isDropdownOpen ? (
+                // Jika dropdown terbuka, tampilkan ikon close
+                <FaTimes className="text-2xl text-gray-900 " />
               ) : (
-                <img src="/img/icon/User icon.svg" height="50" width="50" alt="icon-user" className="xl:w-12 cursor-pointer" />
+                // Jika dropdown tidak terbuka, tampilkan ikon FaBars
+                <FaBars className="text-2xl text-gray-900 " />
               )
             ) : (
+              // Jika tidak login, tampilkan ikon default (misalnya, user icon)
               <img src="/img/icon/User icon.svg" height="50" width="50" alt="icon-user" className="xl:w-12 cursor-pointer" />
             )}
+          </button>
+
+          <div className={`hidden md:block ${isDropdownOpen ? "visible" : "hidden"}`}>
+            <div onClick={toggleDropdown}>
+              {isLogin ? (
+                users.image ? (
+                  <img src={users.image} height="50" width="50" alt="icon-user" className="rounded-full cursor-pointer" />
+                ) : (
+                  <img src="/img/icon/User icon.svg" height="50" width="50" alt="icon-user" className="xl:w-12 cursor-pointer" />
+                )
+              ) : (
+                <img src="/img/icon/User icon.svg" height="50" width="50" alt="icon-user" className="xl:w-12 cursor-pointer" />
+              )}
+            </div>
           </div>
           {isDropdownOpen && (
             <div className="absolute mt-2 bg-white rounded-md shadow-lg right-0 w-48 ">
