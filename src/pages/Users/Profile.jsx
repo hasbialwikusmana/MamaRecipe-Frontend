@@ -286,7 +286,6 @@ function Profile() {
   );
 
   const handleDelete = async (id) => {
-    // Show a confirmation dialog using SweetAlert2
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -297,7 +296,6 @@ function Profile() {
       confirmButtonText: "Yes, delete it!",
     });
 
-    // If the user clicks "Yes" in the confirmation dialog
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
@@ -308,23 +306,99 @@ function Profile() {
           },
         });
 
-        // Show success message after deletion
         Swal.fire({
           icon: "success",
           title: "Success",
           text: "Recipe deleted successfully!",
         });
 
-        // You might want to refresh or update your data after successful deletion
         fetchDataBasedOnTab(activeTab);
       } catch (error) {
-        // Show error message if deletion fails
         Swal.fire({
           icon: "error",
           title: "Oops...",
           text: "Failed to delete recipe. Please try again.",
         });
       }
+    }
+  };
+
+  const handleUnlike = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const baseURL = import.meta.env.VITE_API_URL;
+
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This action will unlike the recipe. Do you want to proceed?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#EFC81A",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, unlike it!",
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`${baseURL}/recipes/${id}/unlike`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        Swal.fire({
+          icon: "success",
+          title: "Unliked!",
+          text: "Recipe removed from liked recipes.",
+        });
+
+        fetchDataBasedOnTab(activeTab);
+      }
+    } catch (error) {
+      console.error("Unlike Error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response?.data?.message || "Failed to unlike recipe. Please try again.",
+      });
+    }
+  };
+
+  const handleUnsave = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const baseURL = import.meta.env.VITE_API_URL;
+
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This action will unsave the recipe. Do you want to proceed?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#EFC81A",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, unsave it!",
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`${baseURL}/recipes/${id}/unsave`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        Swal.fire({
+          icon: "success",
+          title: "Unsaved!",
+          text: "Recipe removed from saved recipes.",
+        });
+
+        fetchDataBasedOnTab(activeTab);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response?.data?.message || "Failed to unsave recipe. Please try again.",
+      });
     }
   };
 
@@ -337,15 +411,15 @@ function Profile() {
             <img src="img/profile/icon-pencil.svg" alt="icon-pencil" className="w-5" />
           </button>
           {showDropdown && (
-            <div className="absolute mt-2 w-36 bg-white rounded-md shadow-lg border border-gray-200 divide-y divide-gray-100 right-0 transform translate-y-full">
-              <button className="p-2 text-gray-700 hover:bg-gray-100 w-full text-left" onClick={() => handleEditClick("profile")}>
-                Edit Profile
+            <div className="absolute mt-2 w-36 bg-primary rounded-md shadow-lg border border-gray-200 divide-y divide-gray-100 right-0 transform translate-y-full">
+              <button className="p-2 text-white hover:bg-secondary w-full text-center" onClick={() => handleEditClick("profile")}>
+                Update Profile
               </button>
-              <button className="p-2 text-gray-700 hover:bg-gray-100 w-full text-left" onClick={() => handleEditClick("image")}>
-                Edit Image
+              <button className="p-2 text-white hover:bg-secondary w-full text-center" onClick={() => handleEditClick("image")}>
+                Update Image
               </button>
-              <button className="p-2 text-gray-700 hover:bg-gray-100 w-full text-left" onClick={() => handleEditClick("password")}>
-                Edit Password
+              <button className="p-2 text-white hover:bg-secondary w-full text-center" onClick={() => handleEditClick("password")}>
+                Update Password
               </button>
             </div>
           )}
@@ -414,6 +488,12 @@ function Profile() {
                   <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
                   <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
                 </Link>
+                <div className="absolute top-2 right-2 flex flex-row space-x-2">
+                  {/* Add the Unlike button */}
+                  <button onClick={() => handleUnsave(recipe.id)} className="bg-red-500 text-white px-2 py-1 rounded-md flex items-center">
+                    <FaTrash />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -436,6 +516,12 @@ function Profile() {
                   <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
                   <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
                 </Link>
+                <div className="absolute top-2 right-2 flex flex-row space-x-2">
+                  {/* Add the Unlike button */}
+                  <button onClick={() => handleUnlike(recipe.id)} className="bg-red-500 text-white px-2 py-1 rounded-md flex items-center">
+                    <FaTrash />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
