@@ -50,8 +50,8 @@ function Navbar() {
       confirmButtonText: "Yes, logout!",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
+        localStorage.clear();
+
         navigate("/auth/login");
       }
     });
