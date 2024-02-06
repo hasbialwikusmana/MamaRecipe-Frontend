@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Swal from "sweetalert2";
 import moment from "moment";
+import { FaEdit, FaTrash } from "react-icons/fa";
 // import { FaEdit, FaTrash } from "react-icons/fa";
 
 const DetailRecipe = () => {
@@ -13,6 +14,7 @@ const DetailRecipe = () => {
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [editingCommentId, setEditingCommentId] = useState(null);
   const [error, setError] = useState(null);
 
   const fetchRecipeDetails = async () => {
@@ -66,17 +68,12 @@ const DetailRecipe = () => {
           },
         }
       );
-
-      // Ambil data komentar yang baru dibuat dari respons server
       const newComment = response.data.data;
 
-      // Update state dengan menambahkan komentar baru ke dalam array komentar
       setComments([newComment, ...comments]);
 
-      // Reset nilai input komentar
       setComment("");
 
-      // Tampilkan SweetAlert2 setelah berhasil mengirim komentar
       Swal.fire({
         icon: "success",
         title: "Success!",
@@ -85,7 +82,6 @@ const DetailRecipe = () => {
     } catch (error) {
       console.error("Error submitting comment:", error.message);
 
-      // Tampilkan SweetAlert2 jika terjadi kesalahan
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -94,83 +90,115 @@ const DetailRecipe = () => {
     }
   };
 
-  // const editComment = async (id) => {
-  //   try {
-  //     const baseURL = import.meta.env.VITE_API_URL;
-  //     const response = await axios.put(
-  //       `${baseURL}/recipes/${id}/comments/${id}`,
-  //       { comment: comment },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     );
+  const handleEditClick = (id) => {
+    setEditingCommentId(id);
 
-  //     // Ambil data komentar yang baru dibuat dari respons server
-  //     const newComment = response.data.data;
+    const commentToEdit = comments.find((comment) => comment.id === id);
 
-  //     // Update state dengan menambahkan komentar baru ke dalam array komentar
-  //     setComments([newComment, ...comments]);
+    setComment(commentToEdit.comment);
+  };
 
-  //     // Reset nilai input komentar
-  //     setComment("");
+  const editComment = async (id) => {
+    try {
+      const baseURL = import.meta.env.VITE_API_URL;
+      await axios.put(
+        `${baseURL}/recipes/${id}/comments/${id}`,
+        { comment: comment },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-  //     // Tampilkan SweetAlert2 setelah berhasil mengirim komentar
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "Success!",
-  //       text: "Your comment has been submitted successfully.",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error submitting comment:", error.message);
+      const updatedComments = comments.map((commentData) => {
+        if (commentData.id === id) {
+          return {
+            ...commentData,
+            comment: comment,
+          };
+        }
+        return commentData;
+      });
+      setComments(updatedComments);
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Your comment has been updated successfully.",
+      });
+    } catch (error) {
+      console.error("Error updating comment:", error.message);
 
-  //     // Tampilkan SweetAlert2 jika terjadi kesalahan
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Oops...",
-  //       text: "Something went wrong! Please try again later.",
-  //     });
-  //   }
-  // };
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Please try again later.",
+      });
+    }
+  };
 
-  // const deleteComment = async (id) => {
-  //   try {
-  //     const baseURL = import.meta.env.VITE_API_URL;
-  //     await axios.delete(`${baseURL}/recipes/${id}/comments/${id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     });
+  const handleUpdateComment = async () => {
+    try {
+      await editComment(editingCommentId);
 
-  //     // Update state dengan menghapus komentar yang memiliki id yang sama dengan id komentar yang dikirimkan
-  //     setComments(comments.filter((comment) => comment.id !== id));
+      setEditingCommentId(null);
+      setComment("");
+    } catch (error) {
+      console.error("Error updating comment:", error.message);
+    }
+  };
 
-  //     // Tampilkan SweetAlert2 setelah berhasil menghapus komentar
+  const handleCancelEdit = () => {
+    setEditingCommentId(null);
+    setComment("");
+  };
 
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "Success!",
-  //       text: "Your comment has been deleted successfully.",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error deleting comment:", error.message);
+  const deleteComment = async (id) => {
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#EFC81A",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
 
-  //     // Tampilkan SweetAlert2 jika terjadi kesalahan
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Oops...",
-  //       text: "Something went wrong! Please try again later.",
-  //     });
-  //   }
-  // };
+      if (result.isConfirmed) {
+        const baseURL = import.meta.env.VITE_API_URL;
+        await axios.delete(`${baseURL}/recipes/${id}/comments/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Your comment has been deleted successfully.",
+        });
+
+        const deletedComment = comments.filter((commentData) => commentData.id !== id);
+        setComments(deletedComment);
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error.message);
+
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong! Please try again later.",
+      });
+    }
+  };
 
   if (loading) {
-    return <p>Loading...</p>; // Display a loading message while recipe details are being fetched
+    return <p>Loading...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>; // Display an error message if there is an issue fetching recipe details
+    return <p>{error}</p>;
   }
   return (
     <>
@@ -209,68 +237,56 @@ const DetailRecipe = () => {
 
         {/* Comment Start */}
 
-        {/* <section className="mt-28 flex flex-col max-sm:mx-0 mx-5 mb-44">
-          <textarea rows="9" cols="50" value={comment} onChange={(e) => setComment(e.target.value)} className="border bg-[#F6F5F4] rounded-lg p-7 font-bold text-[#666666] text-lg" placeholder="Comment :"></textarea>
-          <button onClick={handleCommentSubmit} className="w-80 h-12 rounded bg-primary self-center mt-7 text-xs text-white">
-            Send
-          </button>
-          <h2 className="text-[#3F3A3A] max-lg:text-3xl text-4xl font-bold tracking-wide mt-12 mb-10">Comments</h2>
-          {comments.map((commentData) => (
-            <div key={commentData.id} className="flex max-sm:gap-3 gap-7">
-              Jangan lupa tambahkan properti user dan ubah sesuai kebutuhan
-              <img src={commentData.user.image} alt="dp" className="w-12 h-12 rounded-full" />
-              <div className="flex flex-col">
-                Sesuaikan dengan properti yang dimiliki oleh user dan comment
-                <p className="font-bold text-lg">{commentData.user.name}</p>
-                <p className="text-lg">{commentData.text}</p>
-              </div>
-            </div>
-          ))}
-        </section> */}
-
         <section className="mt-28 flex flex-col max-sm:mx-0 mx-5 mb-44">
           <textarea
             rows="9"
             cols="50"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            className={`border bg-[#F6F5F4] rounded-lg p-7 font-bold text-[#666666] text-lg ${
-              error ? "border-red-500" : "" // Menambahkan border merah jika ada kesalahan
-            }`}
+            className={`border bg-[#F6F5F4] rounded-lg p-7 font-medium text-[#666666] outline-primary text-lg ${error ? "border-red-500" : ""}`}
             placeholder="Comment :"
           ></textarea>
-          <button
-            onClick={handleCommentSubmit}
-            className={`w-80 h-12 rounded bg-primary self-center mt-7 text-xs text-white ${
-              !comment ? "cursor-not-allowed bg-gray-400" : "" // Menonaktifkan tombol jika tidak ada teks di dalam textarea
-            }`}
-            disabled={!comment}
-          >
-            Send
-          </button>
+          {editingCommentId ? (
+            // Jika sedang dalam mode edit, tampilkan tombol Update dan Cancel
+            <div className="flex gap-2 mt-10">
+              <button onClick={handleUpdateComment} className="w-40 h-12 rounded bg-primary text-lg text-white hover:bg-secondary">
+                Update
+              </button>
+              <button onClick={handleCancelEdit} className="w-40 h-12 rounded bg-gray-400 text-lg text-white hover:bg-gray-500">
+                Cancel
+              </button>
+            </div>
+          ) : (
+            // Jika tidak dalam mode edit, tampilkan tombol Send
+            <button onClick={handleCommentSubmit} className={`w-80 h-12 rounded bg-primary self-center mt-7 text-xl text-white ${!comment ? "cursor-not-allowed bg-gray-400" : ""}`} disabled={!comment}>
+              Send
+            </button>
+          )}
 
-          {/* BUAT JIKA ADA DATA NYA MAKA MUNCUL KAN JIKA TIDAK MAKA KOSONG */}
           {comments.length > 0 ? (
             <>
               <h2 className="text-[#3F3A3A] max-lg:text-3xl text-4xl font-bold tracking-wide mt-12 mb-10">Comments</h2>
               <div className="mt-2 flex flex-col overflow-y-auto" style={{ maxHeight: "500px", scrollbarWidth: "thin", scrollbarColor: "transparent transparent" }}>
                 {comments.map((commentData) => (
                   <div key={commentData.id} className="flex max-sm:gap-3 gap-7 items-center mb-3">
-                    {commentData.user && commentData.user.image && <img src={commentData.user.image} alt="dp" className="w-12 h-12 rounded-full" />}
+                    {commentData.user && commentData.user.image ? <img src={commentData.user.image} alt="dp" className="w-12 h-12 rounded-full" /> : <img src="/img/icon/User icon.svg" alt="default-dp" className="w-12 h-12 rounded-full" />}
+
                     <div className="flex flex-col flex-1">
                       {commentData.user && commentData.user.name && (
                         <div className="flex items-center justify-between">
                           <p className="font-bold text-lg">{commentData.user.name}</p>
-                          <div className="flex gap-2">
-                            {/* Tombol Edit */}
-                            {/* <button onClick={() => editComment(commentData.id)} className="text-blue-500">
-                              <FaEdit />
-                            </button> */}
-                            {/* Tombol Delete */}
-                            {/* <button onClick={() => deleteComment(commentData.id)} className="text-red-500">
-                              <FaTrash />
-                            </button> */}
-                          </div>
+                          {commentData.user && commentData.user.id === localStorage.getItem("userId") && (
+                            <div className="flex gap-2">
+                              {editingCommentId !== commentData.id ? (
+                                <button onClick={() => handleEditClick(commentData.id)} className="bg-blue-500 text-white p-2 rounded-md flex items-center">
+                                  <FaEdit />
+                                </button>
+                              ) : null}
+                              <button onClick={() => deleteComment(commentData.id)} className="bg-red-500 text-white p-2 rounded-md flex items-center">
+                                <FaTrash />
+                              </button>
+                            </div>
+                          )}
                         </div>
                       )}
                       {commentData.comment && <p className="text-lg">{commentData.comment}</p>}
