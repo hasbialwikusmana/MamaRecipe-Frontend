@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useState } from "react";
-import axios from "axios";
+import api from "../../../services/api";
 
 const Register = () => {
   const [dataRegister, setDataRegister] = useState({
@@ -25,8 +25,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const baseURL = import.meta.env.VITE_API_URL;
-      await axios.post(`${baseURL}/auth/register`, dataRegister);
+      await api.post("/auth/register", dataRegister);
 
       Swal.fire({
         icon: "success",
