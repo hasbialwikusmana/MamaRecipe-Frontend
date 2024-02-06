@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight, FaBookmark, FaPlus, FaThumbsUp } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaBookmark, FaComment, FaPlus, FaThumbsUp } from "react-icons/fa";
 import moment from "moment";
 import Swal from "sweetalert2";
 
@@ -16,7 +16,6 @@ const ListRecipes = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const token = localStorage.getItem("token");
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,7 +54,6 @@ const ListRecipes = () => {
   );
 
   const handleSearch = () => {
-    // Update URL with search term if it's not empty, otherwise, remove the search parameter
     if (searchTerm.trim() !== "") {
       setSearchParams({ search: searchTerm });
     } else {
@@ -92,39 +90,28 @@ const ListRecipes = () => {
         }
       );
 
-      // Update the local state to reflect the new like status
-      setRecipes((prevRecipes) => prevRecipes.map((recipe) => (recipe.id === id ? { ...recipe, isLiked: true, likeCount: recipe.likeCount + 1 } : recipe)));
       // Show SweetAlert2 toast for successful like
       Swal.fire({
         icon: "success",
         title: "Liked!",
         text: "You can see your liked recipes in the Liked Recipes page",
       });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error.response.data.message,
-      });
-    }
-  };
 
-  const handleUnlike = async (id) => {
-    try {
-      const baseURL = import.meta.env.VITE_API_URL;
-      await axios.delete(`${baseURL}/recipes/${id}/unlike`, {
+      //  PANGGIL KEMBALI DATA RESEP
+      const response = await axios.get(`${baseURL}/recipes`, {
+        params: {
+          ...Object.fromEntries(searchParams),
+          sortBy: sortOption,
+          order: orderOption,
+          page,
+          limit,
+        },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      // Update the local state to reflect the new like status
-      setRecipes((prevRecipes) => prevRecipes.map((recipe) => (recipe.id === id ? { ...recipe, isLiked: false, likeCount: recipe.likeCount - 1 } : recipe)));
-      // Show SweetAlert2 toast for successful unlike
-      Swal.fire({
-        icon: "success",
-        title: "Unliked!",
-        text: "You can like this recipe again",
-      });
+      setRecipes(response.data.data);
+      setLoading(false);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -154,37 +141,21 @@ const ListRecipes = () => {
         text: "You can see your saved recipes in the Saved Recipes page",
       });
 
-      // Update the local state to reflect the new save status
-      setRecipes((prevRecipes) => prevRecipes.map((recipe) => (recipe.id === id ? { ...recipe, isSaved: true, saveCount: recipe.saveCount + 1 } : recipe)));
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error.response.data.message,
-      });
-    }
-  };
-
-  const handleUnsave = async (id) => {
-    try {
-      const baseURL = import.meta.env.VITE_API_URL;
-      await axios.delete(`${baseURL}/recipes/${id}/unsave`, {
+      //  PANGGIL KEMBALI DATA RESEP
+      const response = await axios.get(`${baseURL}/recipes`, {
+        params: {
+          ...Object.fromEntries(searchParams),
+          sortBy: sortOption,
+          order: orderOption,
+          page,
+          limit,
+        },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-
-      // Update the local state to reflect the new save status
-      setRecipes((prevRecipes) => prevRecipes.map((recipe) => (recipe.id === id ? { ...recipe, isSaved: false, saveCount: recipe.saveCount - 1 } : recipe)));
-      // Show SweetAlert2 toast for successful unsave
-      Swal.fire({
-        icon: "success",
-        title: "Unsaved!",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-      }); // Ambil ulang resep setelah mengirim like
+      setRecipes(response.data.data);
+      setLoading(false);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -200,17 +171,13 @@ const ListRecipes = () => {
 
   return (
     <>
-      <section className="px-10 md:px-16 xl:px-28 mb-20">
-        <div className="flex items-center gap-2 lg:gap-4 xl:gap-5 mt-16 md:mt-24 lg:mt-24 xl:mt-44 mb-9 lg:mb-12 xl:mb-20">
-          <div className="h-10 md:h-12 lg:h-16 xl:h-28 w-2 xl:w-5 bg-primary"></div>
-          <h3 className="text-lg md:text-xl lg:text-2xl xl:text-4xl font-bold">List Recipes</h3>
-        </div>
-        <div className="flex items-center justify-between mt-4">
+      <section className="px-10 md:px-16 xl:px-28">
+        <div className="flex items-center justify-between mt-28">
           <Link to="/recipes/add" className="flex items-center px-4 py-2 bg-primary hover:bg-secondary text-white text-sm font-medium rounded-md">
             <FaPlus className="mr-2" /> Add Recipe
           </Link>
         </div>
-        <div className="mx-auto w-full mb-20 mt-10">
+        <div className="mx-auto w-full mb-10 mt-2">
           <div className="relative">
             <div className="absolute flex items-center ml-2 h-full">
               <svg className="w-4 h-4 fill-current text-primary-gray-dark" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -264,30 +231,22 @@ const ListRecipes = () => {
                     {/* Like and Save Buttons */}
                     <div className="absolute top-2 right-2 flex space-x-2 z-10">
                       {/* Tombol Like dan Unlike */}
-                      {recipe.isLiked ? (
-                        <button className="flex items-center space-x-1 bg-primary text-white p-1 rounded-md hover:bg-secondary bg-opacity-75" onClick={() => handleUnlike(recipe.id)}>
-                          <FaThumbsUp className="w-4 h-4" />
-                          <span>{recipe.likeCount}</span>
-                        </button>
-                      ) : (
-                        <button className="flex items-center space-x-1 bg-white p-1 rounded-md text-gray-500 hover:text-primary bg-opacity-75" onClick={() => handleLike(recipe.id)}>
-                          <FaThumbsUp className="w-4 h-4" />
-                          <span>{recipe.likeCount}</span>
-                        </button>
-                      )}
 
-                      {/* Save Button */}
-                      {recipe.isSaved ? (
-                        <button className="flex items-center space-x-1 bg-white p-1 rounded-md text-primary hover:text-red-500 bg-opacity-75" onClick={() => handleUnsave(recipe.id)}>
-                          <FaBookmark className="w-4 h-4" />
-                          <span>{recipe.saveCount}</span>
-                        </button>
-                      ) : (
-                        <button className="flex items-center space-x-1 bg-white p-1 rounded-md text-gray-500 hover:text-primary bg-opacity-75" onClick={() => handleSave(recipe.id)}>
-                          <FaBookmark className="w-4 h-4" />
-                          <span>{recipe.saveCount}</span>
-                        </button>
-                      )}
+                      <button className="flex items-center space-x-1 bg-black p-1 rounded-md text-white hover:text-primary bg-opacity-60" onClick={() => handleLike(recipe.id)}>
+                        {recipe.isLiked ? <FaThumbsUp className="w-4 h-4 text-primary" /> : <FaThumbsUp className="w-4 h-4" />}
+                        <span>{recipe.likeCount}</span>
+                      </button>
+
+                      <button className="flex items-center space-x-1 bg-black p-1 rounded-md text-white hover:text-primary bg-opacity-60" onClick={() => handleSave(recipe.id)}>
+                        {recipe.isSaved ? <FaBookmark className="w-4 h-4 text-primary" /> : <FaBookmark className="w-4 h-4" />}
+                        <span>{recipe.saveCount}</span>
+                      </button>
+
+                      {/* Comment */}
+                      <Link to={`/recipes/detail/${recipe.id}`} className="flex items-center space-x-1 bg-black p-1 rounded-md text-white hover:text-primary bg-opacity-60">
+                        {recipe.isCommented ? <FaComment className="w-4 h-4 text-primary" /> : <FaComment className="w-4 h-4" />}
+                        <span>{recipe.commentCount}</span>
+                      </Link>
                     </div>
 
                     {/* Recipe Details */}
@@ -308,14 +267,14 @@ const ListRecipes = () => {
                       </div>
 
                       {/* Created At */}
-                      <p className="text-xs text-gray-500">{moment(recipe.createdAt).format("MMMM D, YYYY")}</p>
+                      <p className="text-xs text-gray-500">{moment(recipe.createdAt).format("D MMMM YYYY")}</p>
                     </div>
                   </div>
                 ))}
           </div>
         </div>
 
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center mt-4 mb-10">
           <div className="flex items-center space-x-4 sm:space-x-8">
             <label htmlFor="perPage" className="mr-2 text-sm font-medium text-gray-600">
               Show
