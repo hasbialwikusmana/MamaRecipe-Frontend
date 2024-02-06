@@ -24,9 +24,12 @@ const Login = () => {
       const baseURL = import.meta.env.VITE_API_URL;
       const response = await axios.post(`${baseURL}/auth/login`, dataLogin);
 
+      const userId = response.data.data.users.id;
+
       // set token to local storage
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("refreshToken", response.data.data.refreshToken);
+      localStorage.setItem("userId", userId);
 
       Swal.fire({
         icon: "success",
@@ -75,6 +78,7 @@ const Login = () => {
               type="text"
               name="email"
               id="email"
+              autoFocus
               placeholder="examplexxx@gmail.com"
               value={dataLogin.email}
               onChange={(e) => setDataLogin({ ...dataLogin, email: e.target.value })}
@@ -100,7 +104,7 @@ const Login = () => {
               </label>
             </div>
 
-            <button type="submit" onClick={handleLogin} className={`w-full bg-primary mb-3 rounded-md py-3 text-white ${!agreeTerms && "opacity-50 cursor-not-allowed"}`} disabled={!agreeTerms}>
+            <button type="submit" onClick={handleLogin} className={`w-full bg-primary hover:bg-secondary mb-3 rounded-md py-3 text-white ${!agreeTerms && "opacity-50 cursor-not-allowed"}`} disabled={!agreeTerms}>
               Login
             </button>
 
@@ -111,7 +115,7 @@ const Login = () => {
             </div>
           </form>
           <p className="text-[#999999] text-sm mt-5 mb-5">
-            Don’t have an account?
+            Don’t have an account? &nbsp;
             <Link to="/auth/register" className="text-primary font-bold">
               Sign Up
             </Link>
