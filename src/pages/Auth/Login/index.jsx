@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../services/api";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -21,8 +21,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const baseURL = import.meta.env.VITE_API_URL;
-      const response = await axios.post(`${baseURL}/auth/login`, dataLogin);
+      const response = await api.post("/auth/login", dataLogin);
 
       const userId = response.data.data.users.id;
 
