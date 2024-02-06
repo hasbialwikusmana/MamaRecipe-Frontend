@@ -28,10 +28,16 @@ function AddRecipes() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const isYouTubeLink = (url) => {
+    // eslint-disable-next-line no-useless-escape
+    return /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/i.test(url);
   };
 
   const handleSubmit = async (e) => {
@@ -43,7 +49,15 @@ function AddRecipes() {
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
     }
-
+    // Validate YouTube link
+    if (formData.video && !isYouTubeLink(formData.video)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid YouTube Link",
+        text: "Please provide a valid YouTube video link.",
+      });
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
       const baseURL = import.meta.env.VITE_API_URL;
@@ -75,7 +89,7 @@ function AddRecipes() {
     <>
       <form className="flex flex-col items-center max-[767px]:mx-[5%] mx-[16%] gap-10 mt-40 mb-20" onSubmit={handleSubmit} encType="multipart/form-data">
         <input type="text" name="user_id" value="1" hidden readOnly />
-        <label htmlFor="add-photo" className="bg-[#F6F5F4] w-full h-96 rounded-lg flex flex-col justify-center items-center gap-4 text-lg font-bold text-[#666666] cursor-pointer">
+        <label htmlFor="add-photo" className="bg-[#F6F5F4] w-full h-96 rounded-lg flex flex-col justify-center items-center gap-4 text-lg font-medium text-[#666666] cursor-pointer">
           {previewImage ? (
             <img src={previewImage} alt="preview" className="w-full h-full object-cover rounded-lg" />
           ) : (
@@ -88,7 +102,7 @@ function AddRecipes() {
         <input type="file" id="add-photo" name="image" hidden onChange={handleImageChange} />
 
         <input
-          className="bg-[#F6F5F4] w-full h-20 rounded-lg indent-10 text-lg placeholder:text-[#666666] placeholder:font-bold placeholder:tracking-wider outline-primary"
+          className="bg-[#F6F5F4] w-full h-20 rounded-lg indent-10 text-lg placeholder:text-[#666666] placeholder:font-medium placeholder:tracking-wider outline-primary"
           placeholder="Title"
           type="text"
           name="title"
@@ -98,14 +112,14 @@ function AddRecipes() {
         <textarea
           cols="30"
           rows="10"
-          className="bg-[#F6F5F4] w-full rounded-lg px-8 py-6 text-lg placeholder:text-[#666666] placeholder:font-bold placeholder:tracking-wider outline-primary"
+          className="bg-[#F6F5F4] w-full rounded-lg px-8 py-6 text-lg placeholder:text-[#666666] placeholder:font-medium placeholder:tracking-wider outline-primary"
           placeholder="Ingredients"
           name="ingredients"
           value={formData.ingredients}
           onChange={handleInputChange}
         ></textarea>
         <input
-          className="bg-[#F6F5F4] w-full h-20 rounded-lg indent-10 text-lg placeholder:text-[#666666] placeholder:font-bold placeholder:tracking-wider outline-primary"
+          className="bg-[#F6F5F4] w-full h-20 rounded-lg indent-10 text-lg placeholder:text-[#666666] placeholder:font-medium placeholder:tracking-wider outline-primary"
           placeholder="Youtube Video Link"
           type="text"
           name="video"
