@@ -76,6 +76,7 @@ const Register = () => {
               name="name"
               id="name"
               placeholder="Enter your name"
+              autoFocus
               value={dataRegister.name}
               onChange={(e) => setDataRegister({ ...dataRegister, name: e.target.value })}
             />
@@ -107,27 +108,27 @@ const Register = () => {
             />
 
             <label className="text-[#696F79] mb-1" htmlFor="password">
-              Create New Password
+              Password
             </label>
             <input
               className="w-full bg-white border border-[#8692A6] rounded p-3 mb-4 text-sm focus:drop-shadow  focus:outline-primary"
               type="password"
               name="password"
               id="password"
-              placeholder="Create New Password"
+              placeholder="Create Password"
               value={dataRegister.password}
               onChange={(e) => setDataRegister({ ...dataRegister, password: e.target.value })}
             />
 
             <label className="text-[#696F79] mb-1" htmlFor="password2">
-              New Password
+              Confirm Password
             </label>
             <input
               className="w-full bg-white border border-[#8692A6] rounded p-3 mb-4 text-sm focus:drop-shadow  focus:outline-primary"
               type="password"
               name="password2"
               id="password2"
-              placeholder="New Password"
+              placeholder="Confirm Password"
               value={dataRegister.confirmPassword}
               onChange={(e) => setDataRegister({ ...dataRegister, confirmPassword: e.target.value })}
             />
@@ -139,12 +140,12 @@ const Register = () => {
               </label>
             </div>
 
-            <button type="submit" onClick={handleRegister} className={`w-full bg-primary mb-3 rounded-md py-3 text-white ${!agreeTerms && "opacity-50 cursor-not-allowed"}`} disabled={!agreeTerms}>
+            <button type="submit" onClick={handleRegister} className={`w-full bg-primary hover:bg-secondary mb-3 rounded-md py-3 text-white ${!agreeTerms && "opacity-50 cursor-not-allowed"}`} disabled={!agreeTerms}>
               Register Account
             </button>
           </form>
           <p className="text-[#999999] text-sm mt-5 mb-5">
-            Already have account?
+            Already have account? &nbsp;
             <Link to="/auth/login" className="text-primary font-bold">
               Log in Here
             </Link>
