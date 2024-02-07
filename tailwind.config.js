@@ -10,6 +10,9 @@ export default {
         primary: "#EFC81A",
         secondary: "#d7b417",
       },
+      backgroundColor: {
+        scroll: "rgba(255, 255, 255, 0.9)",
+      },
     },
   },
   plugins: [],
