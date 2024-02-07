@@ -90,14 +90,12 @@ const ListRecipes = () => {
         }
       );
 
-      // Show SweetAlert2 toast for successful like
       Swal.fire({
         icon: "success",
         title: "Liked!",
         text: "You can see your liked recipes in the Liked Recipes page",
       });
 
-      //  PANGGIL KEMBALI DATA RESEP
       const response = await axios.get(`${baseURL}/recipes`, {
         params: {
           ...Object.fromEntries(searchParams),
@@ -134,14 +132,12 @@ const ListRecipes = () => {
         }
       );
 
-      // Show SweetAlert2 toast for successful save
       Swal.fire({
         icon: "success",
         title: "Saved!",
         text: "You can see your saved recipes in the Saved Recipes page",
       });
 
-      //  PANGGIL KEMBALI DATA RESEP
       const response = await axios.get(`${baseURL}/recipes`, {
         params: {
           ...Object.fromEntries(searchParams),
@@ -166,7 +162,12 @@ const ListRecipes = () => {
   };
 
   if (!recipes) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="absolute animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
+        <img src="/img/login/logo-yellow.svg" className="rounded-full h-24 w-24" alt="loading" />
+      </div>
+    );
   }
 
   return (
@@ -180,9 +181,7 @@ const ListRecipes = () => {
         <div className="mx-auto w-full mb-10 mt-2">
           <div className="relative">
             <div className="absolute flex items-center ml-2 h-full">
-              <svg className="w-4 h-4 fill-current text-primary-gray-dark" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15.8898 15.0493L11.8588 11.0182C11.7869 10.9463 11.6932 10.9088 11.5932 10.9088H11.2713C12.3431 9.74952 12.9994 8.20272 12.9994 6.49968C12.9994 2.90923 10.0901 0 6.49968 0C2.90923 0 0 2.90923 0 6.49968C0 10.0901 2.90923 12.9994 6.49968 12.9994C8.20272 12.9994 9.74952 12.3431 10.9088 11.2744V11.5932C10.9088 11.6932 10.9495 11.7869 11.0182 11.8588L15.0493 15.8898C15.1961 16.0367 15.4336 16.0367 15.5805 15.8898L15.8898 15.5805C16.0367 15.4336 16.0367 15.1961 15.8898 15.0493ZM6.49968 11.9994C3.45921 11.9994 0.999951 9.54016 0.999951 6.49968C0.999951 3.45921 3.45921 0.999951 6.49968 0.999951C9.54016 0.999951 11.9994 3.45921 11.9994 6.49968C11.9994 9.54016 9.54016 11.9994 6.49968 11.9994Z"></path>
-              </svg>
+              <img src="/img/icon/icon-search.svg" alt="Search Icon" className="w-4 h-4" />
             </div>
             <input
               type="text"
@@ -223,15 +222,11 @@ const ListRecipes = () => {
               ? Array.from({ length: limit }).map((_, index) => <SkeletonCard key={index} />)
               : recipes.map((recipe) => (
                   <div key={recipe.id} className="relative rounded-md overflow-hidden bg-white shadow-md">
-                    {/* Recipe Image */}
                     <Link to={`/recipes/detail/${recipe.id}`} className="block relative">
                       <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
                     </Link>
 
-                    {/* Like and Save Buttons */}
                     <div className="absolute top-2 right-2 flex space-x-2 z-10">
-                      {/* Tombol Like dan Unlike */}
-
                       <button className="flex items-center space-x-1 bg-black p-1 rounded-md text-white hover:text-primary bg-opacity-60" onClick={() => handleLike(recipe.id)}>
                         {recipe.isLiked ? <FaThumbsUp className="w-4 h-4 text-primary" /> : <FaThumbsUp className="w-4 h-4" />}
                         <span>{recipe.likeCount}</span>
@@ -241,33 +236,25 @@ const ListRecipes = () => {
                         {recipe.isSaved ? <FaBookmark className="w-4 h-4 text-primary" /> : <FaBookmark className="w-4 h-4" />}
                         <span>{recipe.saveCount}</span>
                       </button>
-
-                      {/* Comment */}
-                      <Link to={`/recipes/detail/${recipe.id}`} className="flex items-center space-x-1 bg-black p-1 rounded-md text-white hover:text-primary bg-opacity-60">
-                        {recipe.isCommented ? <FaComment className="w-4 h-4 text-primary" /> : <FaComment className="w-4 h-4" />}
-                        <span>{recipe.commentCount}</span>
-                      </Link>
                     </div>
 
-                    {/* Recipe Details */}
                     <div className="p-4 bg-white bg-opacity-80">
-                      {/* Recipe Title */}
                       <p className="text-xl font-bold mb-2">{recipe.title}</p>
-
-                      {/* User Info */}
                       <div className="flex items-center mb-4">
-                        {/* User Image */}
                         {recipe.user && recipe.user.image ? (
                           <img src={recipe.user.image} alt={recipe.user.name} className="w-10 h-10 rounded-full mr-2" />
                         ) : (
                           <img src="/img/icon/User icon.svg" alt="Default User" className="w-10 h-10 rounded-full mr-2" />
                         )}
-                        {/* User Name */}
                         {recipe.user && recipe.user.name && <p className="text-sm">{recipe.user.name}</p>}
                       </div>
-
-                      {/* Created At */}
-                      <p className="text-xs text-gray-500">{moment(recipe.createdAt).format("D MMMM YYYY")}</p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-gray-500">Created {moment(recipe.createdAt).fromNow(true)}</p>
+                        <Link to={`/recipes/detail/${recipe.id}`} className="flex items-center space-x-1 text-xs text-gray-500 hover:text-primary">
+                          {recipe.isCommented ? <FaComment className="w-4 h-4 text-primary" /> : <FaComment className="w-4 h-4" />}
+                          <span>{recipe.commentCount}</span>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -287,7 +274,6 @@ const ListRecipes = () => {
           </div>
           <div className="flex items-center space-x-4 sm:space-x-8 mt-4 sm:mt-0">
             <button onClick={() => handlePageChange(page - 1)} disabled={page === 1} className={`px-4 py-2 rounded-md ${page === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-primary text-white hover:bg-secondary"}`}>
-              {/* React Icon Previous */}
               <FaArrowLeft className="w-4 h-4" />
             </button>
 

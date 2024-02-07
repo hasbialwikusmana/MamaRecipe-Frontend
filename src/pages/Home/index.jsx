@@ -93,9 +93,6 @@ function Home() {
         <img className="absolute w-48 sm:w-56 md:w-64 lg:w-96 xl:w-[36.5%] right-12 sm:right-16 md:right-28 xl:right-24 max-[500px]:top-52 top-40 sm:top-24 md:top-32 xl:top-36 rounded-md" src={imageLanding} alt="img-landing" />
       </section>
 
-      {/* Search End */}
-
-      {/* Popular For You ! Start */}
       <section>
         <div className="flex items-center gap-2 lg:gap-4 xl:gap-6 mb-9 lg:mb-12 xl:mb-20 px-10 md:px-16 xl:px-28">
           <div className="h-10 md:h-12 lg:h-16 xl:h-28 w-2 xl:w-5 bg-primary"></div>
@@ -115,9 +112,7 @@ function Home() {
           </div>
         </div>
       </section>
-      {/* Popular For You ! End */}
 
-      {/* New Recipe Start */}
       <section>
         <div className="flex items-center gap-2 lg:gap-4 xl:gap-5 px-10 md:px-16 xl:px-28 mt-16 xl:my-20 md:mt-12 mb-9 lg:mb-12">
           <div className="h-10 md:h-12 lg:h-16 xl:h-28 w-2 xl:w-5 bg-primary"></div>
@@ -138,9 +133,7 @@ function Home() {
           </div>
         </div>
       </section>
-      {/* New Recipe End */}
 
-      {/* Popular Recipe Start */}
       <section className="px-10 md:px-16 xl:px-28 mb-20">
         <div className="flex items-center gap-2 lg:gap-4 xl:gap-5 mt-16 md:mt-24 lg:mt-24 xl:mt-44 mb-9 lg:mb-12 xl:mb-20">
           <div className="h-10 md:h-12 lg:h-16 xl:h-28 w-2 xl:w-5 bg-primary"></div>
@@ -149,21 +142,17 @@ function Home() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10 lg:gap-14">
           {loading
-            ? // Tampilkan skeleton loader untuk setiap resep dalam bentuk kartu
-              Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />)
+            ? Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />)
             : recipes.map((recipe) => (
                 <div key={recipe.id} className="relative rounded-md overflow-hidden bg-white shadow-md">
                   <Link to={`/recipes/detail/${recipe.id}`} className="block">
-                    {/* Image */}
                     <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
-                    {/* Title */}
                     <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60  text-white  font-bold text-xl xl:text-xl px-5 ">{recipe.title}</div>
                   </Link>
                 </div>
               ))}
         </div>
       </section>
-      {/* Popular Recipe End */}
     </>
   );
 }

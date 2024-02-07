@@ -49,7 +49,6 @@ function AddRecipes() {
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
     }
-    // Validate YouTube link
     if (formData.video && !isYouTubeLink(formData.video)) {
       Swal.fire({
         icon: "error",

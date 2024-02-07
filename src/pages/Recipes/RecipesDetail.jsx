@@ -6,7 +6,6 @@ import Footer from "../../components/Footer";
 import Swal from "sweetalert2";
 import moment from "moment";
 import { FaEdit, FaTrash } from "react-icons/fa";
-// import { FaEdit, FaTrash } from "react-icons/fa";
 
 const DetailRecipe = () => {
   const { id } = useParams();
@@ -26,7 +25,6 @@ const DetailRecipe = () => {
         },
       });
 
-      // Set state with the received recipe data
       setRecipe(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -194,24 +192,30 @@ const DetailRecipe = () => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="absolute animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
+        <img src="/img/login/logo-yellow.svg" className="rounded-full h-24 w-24" alt="loading" />
+      </div>
+    );
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>{error}</p>
+      </div>
+    );
   }
   return (
     <>
       <Navbar />
-      {/* Title Start */}
       <section className="flex flex-col justify-start items-center mt-28 gap-14 mb-20">
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-indigo-900 text-center mx-2 md:mx-5">{recipe.title}</h1>
         <img src={recipe.image} alt="food" className="w-96 h-96 rounded-2xl" />
       </section>
-      {/* Title End */}
 
       <div className="max-sm:mx-[10%] mx-[15%]">
-        {/* Ingredient Start */}
         <section className="mt-20">
           <h2 className="max-lg:text-2xl lg:text-3xl xl:text-4xl font-bold text-[#3F3A3A] tracking-wide mb-5 sm:mb-7 lg:mb-10">Ingredients</h2>
           {recipe.ingredients ? (
@@ -224,19 +228,12 @@ const DetailRecipe = () => {
             <p>No ingredients available</p>
           )}
         </section>
-        {/* Ingredient End */}
-
-        {/* Video Start */}
         <section className="mt-20 mb-20">
           <h2 className="text-3xl font-bold tracking-wide text-[#3F3A3A] lg:text-4xl max-lg:text-3xl">Video</h2>
           <Link to={`/recipes/video/${id}`} className="mt-9 max-sm:w-56 w-80 max-sm:h-14 h-20 bg-primary rounded-xl flex justify-center items-center">
             <img src="/img/detailRecipe/play.svg" alt="icon-play" />
           </Link>
         </section>
-        {/* Video End */}
-
-        {/* Comment Start */}
-
         <section className="mt-28 flex flex-col max-sm:mx-0 mx-5 mb-44">
           <textarea
             rows="9"
@@ -247,7 +244,6 @@ const DetailRecipe = () => {
             placeholder="Comment :"
           ></textarea>
           {editingCommentId ? (
-            // Jika sedang dalam mode edit, tampilkan tombol Update dan Cancel
             <div className="flex gap-2 mt-10">
               <button onClick={handleUpdateComment} className="w-40 h-12 rounded bg-primary text-lg text-white hover:bg-secondary">
                 Update
@@ -257,7 +253,6 @@ const DetailRecipe = () => {
               </button>
             </div>
           ) : (
-            // Jika tidak dalam mode edit, tampilkan tombol Send
             <button onClick={handleCommentSubmit} className={`w-80 h-12 rounded bg-primary self-center mt-7 text-xl text-white ${!comment ? "cursor-not-allowed bg-gray-400" : ""}`} disabled={!comment}>
               Send
             </button>
@@ -300,7 +295,6 @@ const DetailRecipe = () => {
             ""
           )}
         </section>
-        {/* Comment End */}
       </div>
       <Footer />
     </>

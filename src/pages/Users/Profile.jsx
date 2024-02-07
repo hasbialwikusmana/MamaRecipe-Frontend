@@ -59,7 +59,6 @@ function Profile() {
 
   const handleEditModalClose = async (discardChanges) => {
     if (discardChanges) {
-      // Gunakan SweetAlert2 untuk konfirmasi penutupan modal
       const result = await Swal.fire({
         title: "Discard Changes?",
         text: "Are you sure you want to discard changes?",
@@ -71,7 +70,6 @@ function Profile() {
       });
 
       if (result.isConfirmed) {
-        //  reset data
         await getUsersProfile();
         setEditFormData({
           name: users.name,
@@ -101,18 +99,18 @@ function Profile() {
       switch (tabType) {
         case "My Recipe":
           endpoint = "/recipes/myRecipes";
-          setMySavedRecipes([]); // Reset data tab lainnya
-          setMyLikedRecipes([]); // Reset data tab lainnya
+          setMySavedRecipes([]);
+          setMyLikedRecipes([]);
           break;
         case "Saved Recipe":
           endpoint = "/recipes/savedRecipes";
-          setMyRecipes([]); // Reset data tab lainnya
-          setMyLikedRecipes([]); // Reset data tab lainnya
+          setMyRecipes([]);
+          setMyLikedRecipes([]);
           break;
         case "Liked Recipe":
           endpoint = "/recipes/likedRecipes";
-          setMyRecipes([]); // Reset data tab lainnya
-          setMySavedRecipes([]); // Reset data tab lainnya
+          setMyRecipes([]);
+          setMySavedRecipes([]);
           break;
         default:
           break;
@@ -489,7 +487,6 @@ function Profile() {
                   <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
                 </Link>
                 <div className="absolute top-2 right-2 flex flex-row space-x-2">
-                  {/* Add the Unlike button */}
                   <button onClick={() => handleUnsave(recipe.id)} className="bg-red-500 text-white px-2 py-1 rounded-md flex items-center">
                     <FaTrash />
                   </button>
@@ -517,7 +514,6 @@ function Profile() {
                   <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
                 </Link>
                 <div className="absolute top-2 right-2 flex flex-row space-x-2">
-                  {/* Add the Unlike button */}
                   <button onClick={() => handleUnlike(recipe.id)} className="bg-red-500 text-white px-2 py-1 rounded-md flex items-center">
                     <FaTrash />
                   </button>
@@ -560,10 +556,7 @@ function Profile() {
             {editType === "image" && (
               <div>
                 <h2 className="text-2xl font-bold mb-4">Edit Profile Image</h2>
-                <div className="mb-6 flex items-center justify-center">
-                  {/* Tambahkan elemen img untuk menampilkan preview gambar */}
-                  {editFormData.image && <img src={URL.createObjectURL(editFormData.image)} alt="Preview" className="mt-2 w-full h-36 object-cover rounded-md border" />}
-                </div>
+                <div className="mb-6 flex items-center justify-center">{editFormData.image && <img src={URL.createObjectURL(editFormData.image)} alt="Preview" className="mt-2 w-full h-36 object-cover rounded-md border" />}</div>
                 <form onSubmit={handleEditFormSubmit}>
                   <div className="mb-6">
                     <label htmlFor="image" className="block text-sm font-medium text-gray-600">
