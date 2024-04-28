@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 import Swal from "sweetalert2";
 import moment from "moment";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -209,7 +207,6 @@ const DetailRecipe = () => {
   }
   return (
     <>
-      <Navbar />
       <section className="flex flex-col justify-start items-center mt-28 gap-14 mb-20">
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-indigo-900 text-center mx-2 md:mx-5">{recipe.title}</h1>
         <img src={recipe.image} alt="food" className="w-96 h-96 rounded-2xl" />
@@ -296,7 +293,6 @@ const DetailRecipe = () => {
           )}
         </section>
       </div>
-      <Footer />
     </>
   );
 };
