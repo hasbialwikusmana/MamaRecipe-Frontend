@@ -1,55 +1,80 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-api.interceptors.request.use(
-  function (config) {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers = {
-        Authorization: `${token}`,
-      };
-    }
-    return config;
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+api.interceptors.response.use(
+  async (response) => {
+    return response;
   },
-  function (error) {
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 400 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const newToken = await refreshAccessToken();
+
+      if (newToken) {
+        localStorage.setItem("token", newToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return axios(originalRequest);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Your session has expired. Please log in again.",
+          showCancelButton: false,
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.clear();
+            window.location.replace("/");
+          }
+        });
+
+        return Promise.reject(error);
+      }
+    }
+
     return Promise.reject(error);
   }
 );
 
-api.interceptors.response.use(
-  function (response) {
-    return response;
-  },
-  async function (error) {
-    const navigate = useNavigate();
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const refreshToken = localStorage.getItem("refreshToken");
-      try {
-        const response = await api.post("/auth/refresh-token", {
-          refreshToken,
-        });
-        localStorage.setItem("token", response.data.data.token);
-        localStorage.setItem("refreshToken", response.data.data.refreshToken);
-        return api(originalRequest);
-      } catch (error) {
-        localStorage.clear();
-        Swal.fire({
-          icon: "error",
-          title: "Session Expired",
-          text: "Please log in again.",
-        });
-        navigate("/auth/login");
-      }
+async function refreshAccessToken() {
+  try {
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (refreshToken) {
+      const response = await api.post("/auth/refresh-token", { refreshToken });
+      console.log(response.data.data);
+
+      const newToken = response.data.refreshToken;
+
+      return newToken;
     }
-    return Promise.reject(error);
+
+    return null;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
-);
+}
 
 export default api;
