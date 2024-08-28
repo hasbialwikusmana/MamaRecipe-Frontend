@@ -4,13 +4,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/hasbialwikusmana/MamaRecipe-Frontend">
-    <img src="https://github.com/user-attachments/assets/3e12d0db-c736-4e8c-a524-7ecfac155188" alt="Logo" width="100%">
+    <img src="https://github.com/user-attachments/assets/d84cff47-7c18-40d5-8abd-91f853b4e760" alt="Logo" width="100%">
   </a>
 
-  <h3 align="center">MamaRecipe</h3>
+  <h3 align="center">Mama Recipe</h3>
 
   <p align="center">
- MamaRecipe is a recipe sharing platform that allows users to share, explore, and create various recipes.
+ Mama Recipe is a recipe sharing platform that allows users to share, explore, and create various recipes.
     <br />
     <a href="https://mamarecipe-fe.netlify.app/">View Demo</a>
   </p>
@@ -20,7 +20,7 @@
 
 ## About The Project
 
-**MamaRecipe** is a platform for food enthusiasts where users can share their favorite recipes, explore new ones, and manage their recipe collections easily.
+**Mama Recipe** is a platform for food enthusiasts where users can share their favorite recipes, explore new ones, and manage their recipe collections easily.
 
 ### Built With
 
@@ -58,7 +58,7 @@ If you want to run this project locally, I recommend you configure the [back-end
 - Clone the repo
 
 ```
-git clone https://github.com/hasbialwikusmana/Blanja-Frontend.git
+git clone https://github.com/hasbialwikusmana/MamaRecipe-Frontend.git
 ```
 
 - Go To Folder Repo
@@ -95,16 +95,21 @@ VITE_API_URL = "YOUR_API_URL"
 <table width="100%" style="table-layout: auto;">
   <!-- Row 1 -->
   <tr>
-    <td width="50%" style="vertical-align: top;">
+    <td colspan="2">
       <img src="https://github.com/user-attachments/assets/440cd5a1-6a20-4da5-8786-1417ec91fa10" alt="Landing Page" width="100%">
     </td>
-    <td width="50%" style="vertical-align: top;">
+  </tr>
+  <tr>
+  <td colspan="2" align="center" style="padding: 10px 0;"><strong>Landing Page</strong></td>
+  </tr>
+
+   <tr>
+    <td colspan="2">
       <img src="https://github.com/user-attachments/assets/7ffaa809-41ea-4cd1-b2e4-e5b3677cffda" alt="Login Page" width="100%">
     </td>
   </tr>
   <tr>
-    <td align="center" style="padding: 10px 0;"><strong>Landing Page</strong></td>
-    <td align="center" style="padding: 10px 0;"><strong>Login Page</strong></td>
+    <td colspan="2" align="center" style="padding: 10px 0;"><strong>Login Page</strong></td>
   </tr>
 
   <!-- Row 2 -->
@@ -141,18 +146,22 @@ VITE_API_URL = "YOUR_API_URL"
     <td colspan="2" align="center" style="padding: 10px 0;"><strong>Recipes Page</strong></td>
   </tr>
 
-  <!-- Row 5 -->
   <tr>
-    <td width="50%" style="vertical-align: top;">
+    <td colspan="2">
       <img src="https://github.com/user-attachments/assets/6b77c29a-1571-4bcb-aba5-069fe9c8f852" alt="Recipes Detail Page" width="100%">
     </td>
-    <td width="50%" style="vertical-align: top;">
+  </tr>
+  <tr>
+    <td colspan="2" align="center" style="padding: 10px 0;"><strong>Recipes Detail Page</strong></td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
       <img src="https://github.com/user-attachments/assets/1cd48ff2-7b3d-4ce6-b538-76712770192f" alt="Video Detail Page" width="100%">
     </td>
   </tr>
   <tr>
-    <td align="center" style="padding: 10px 0;"><strong>Recipes Detail Page</strong></td>
-    <td align="center" style="padding: 10px 0;"><strong>Video Detail Page</strong></td>
+    <td colspan="2" align="center" style="padding: 10px 0;"><strong>Video Detail Page</strong></td>
   </tr>
 
   <!-- Row 6 -->
