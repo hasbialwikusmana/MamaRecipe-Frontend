@@ -453,7 +453,7 @@ function Profile() {
               <div key={recipe.id} className="relative rounded-md overflow-hidden bg-white shadow-md">
                 <Link to={`/recipes/detail/${recipe.id}`} className="block">
                   <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
-                  <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
+                  <div className="w-auto h-auto rounded-r-sm absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
                 </Link>
                 <div className="absolute top-2 right-2 flex flex-row space-x-2">
                   <Link to={`/recipes/update/${recipe.id}`} className="bg-blue-500 text-white px-2 py-1 rounded-md flex items-center">
@@ -484,7 +484,7 @@ function Profile() {
               <div key={recipe.id} className="relative rounded-md overflow-hidden bg-white shadow-md">
                 <Link to={`/recipes/detail/${recipe.id}`} className="block">
                   <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
-                  <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
+                  <div className="w-auto h-auto rounded-r-sm absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
                 </Link>
                 <div className="absolute top-2 right-2 flex flex-row space-x-2">
                   <button onClick={() => handleUnsave(recipe.id)} className="bg-red-500 text-white px-2 py-1 rounded-md flex items-center">
@@ -511,7 +511,7 @@ function Profile() {
               <div key={recipe.id} className="relative rounded-md overflow-hidden bg-white shadow-md">
                 <Link to={`/recipes/detail/${recipe.id}`} className="block">
                   <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
-                  <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
+                  <div className="w-auto h-auto rounded-r-sm absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">{recipe.title}</div>
                 </Link>
                 <div className="absolute top-2 right-2 flex flex-row space-x-2">
                   <button onClick={() => handleUnlike(recipe.id)} className="bg-red-500 text-white px-2 py-1 rounded-md flex items-center">

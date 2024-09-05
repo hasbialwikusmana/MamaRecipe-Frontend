@@ -33,7 +33,6 @@
 - **Responsive Design**: Accessible on both desktop and mobile devices for ease of use.
 - **User Authentication**: Secure login and registration for personalized user experiences.
 - **Profile Management**: Users can update their profile information, including their favorite recipes.
-- **Recipe Categories**: Organize and browse recipes by categories such as appetizers, main courses, desserts, etc.
 - **Video Tutorials**: Watch video guides for detailed cooking instructions.
 
 ### Built With
@@ -110,7 +109,7 @@ VITE_API_URL = "YOUR_API_URL"
   <!-- Row 1 -->
   <tr>
     <td colspan="2">
-      <img src="https://github.com/user-attachments/assets/16782ab5-dd7d-4912-85e6-4757f21a86ff" alt="Landing Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/5c3083cb-bb42-4da7-8801-c08dbbc94c35" alt="Landing Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -138,10 +137,10 @@ VITE_API_URL = "YOUR_API_URL"
   <!-- Row 2 -->
   <tr>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/484942a4-fc4c-4c4d-8c68-ee26dfab559d" alt="Profile Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/70e05a92-c52b-4471-a970-df143389b8a2" alt="Profile Page" width="100%">
     </td>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/3174b630-a310-4416-8968-bd4736a4d92c" alt="Update Profile Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/b85d0b9e-8467-40b2-8513-99fc39c0984d" alt="Update Profile Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -155,7 +154,7 @@ VITE_API_URL = "YOUR_API_URL"
       <img src="https://github.com/user-attachments/assets/913028e4-022e-4c55-ba13-4776e09696a5" alt="Add Recipes Page" width="100%">
     </td>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/30cb9ba4-c8db-4598-99f4-99e04c4f4ce8" alt="Edit Recipes Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/43239dca-6cf9-41ef-8df5-3138d7499701" alt="Edit Recipes Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -166,7 +165,7 @@ VITE_API_URL = "YOUR_API_URL"
   <!-- Row 4 -->
   <tr>
     <td colspan="2">
-      <img src="https://github.com/user-attachments/assets/0500b760-e97c-4d82-afe3-11f0f8998b03" alt="Recipes Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/0fb79f01-bfc7-4c2a-9b5f-eedf1300edcb" alt="Recipes Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -175,7 +174,7 @@ VITE_API_URL = "YOUR_API_URL"
 
   <tr>
     <td colspan="2">
-      <img src="https://github.com/user-attachments/assets/19b28e46-bf2c-417b-b545-ded84addc5d6" alt="Recipes Detail Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/7239a49e-801e-4969-a09d-380eaf980f95" alt="Recipes Detail Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -184,7 +183,7 @@ VITE_API_URL = "YOUR_API_URL"
 
   <tr>
     <td colspan="2">
-      <img src="https://github.com/user-attachments/assets/a67760aa-cf40-4e4a-8666-3195b034b892" alt="Video Detail Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/6d0c76cd-d013-481e-8ce6-e3df046bd73c" alt="Video Detail Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -194,10 +193,10 @@ VITE_API_URL = "YOUR_API_URL"
   <!-- Row 5 -->
   <tr>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/cac161ac-4dce-4698-b889-ce735bc538f3" alt="My Recipes Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/9b4aacd2-3b23-4ce2-b4e2-9cce0f9565c1" alt="My Recipes Page" width="100%">
     </td>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/6bf85729-90e0-4614-b154-c62588f6d607" alt="Saved Recipes Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/9fac3129-2f06-4912-88b9-55a0bbbe14a7" alt="Saved Recipes Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -208,10 +207,10 @@ VITE_API_URL = "YOUR_API_URL"
   <!-- Row 6 -->
   <tr>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/6215d78c-4ba9-4948-b326-aa9b0caad097" alt="Liked Recipes Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/8425dd47-9551-46fd-a745-e6c6d57a3e5f" alt="Liked Recipes Page" width="100%">
     </td>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/7885fb1e-dd62-4005-836a-3edf82beb898" alt="Update Image Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/4bd11728-24a8-4a10-b6f1-97b041702780" alt="Update Image Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -222,7 +221,7 @@ VITE_API_URL = "YOUR_API_URL"
   <!-- Row 7 -->
   <tr>
     <td colspan="2">
-      <img src="https://github.com/user-attachments/assets/51a21aaf-9951-46a8-9deb-905d2e7b3388" alt="Update Password Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/8ba74339-a0fd-43ea-95f8-e2eb5d8f98ef" alt="Update Password Page" width="100%">
     </td>
   </tr>
   <tr>

@@ -103,9 +103,9 @@ function Home() {
           <img src={ImagePopular} alt="img-popular" className="w-72 md:w-1/2 outline-corner xl:outline-corner-lg mb-12" />
 
           <div className="md:ps-16 lg:ps-32 xl:ps-40 md:flex md:flex-col md:justify-center">
-            <h2 className="text-[#3F3A3A] text-xl md:text-2xl lg:text-3xl xl:text-[2.7rem]/[3.5rem] font-bold">Healthy Bone Broth Ramen (Quick & Easy)</h2>
+            <h2 className="text-[#3F3A3A] text-xl md:text-2xl lg:text-3xl xl:text-[2.7rem]/[3.5rem] font-bold">Healthy Banana Blueberry Muffin</h2>
             <div className="w-10 xl:w-20 h-2 border-b border-[#6F6A40]"></div>
-            <p className="text-[#3F3A3A] mt-3 mb-8 text-sm xl:text-xl ">Quick + Easy Chicken Bone Broth Ramen Healthy chicken ramen in a hurry? That&apos;s right!</p>
+            <p className="text-[#3F3A3A] mt-3 mb-8 text-sm xl:text-xl ">Banana, Blueberry, and Vanilla Muffins are a must try for any healthy breakfast.</p>
             <Link to="/recipes/list" className="bg-primary text-xs px-[1.35rem] py-3 xl:px-[2.65rem] xl:py-4 rounded xl:rounded-md text-white tracking-wider xl:tracking-widest active:ring md:w-28 xl:w-40">
               Learn More
             </Link>
@@ -124,9 +124,9 @@ function Home() {
 
           <img src={ImageNewRecipe} alt="img-new" className="h-80 w-80 md:w-1/2 md:h-auto object-cover relative top-7 xl:top-16" />
           <div className="mt-14 md:ps-16 lg:ps-32 xl:ps-40 md:flex md:flex-col md:justify-center">
-            <h2 className="text-[#3F3A3A] text-xl md:text-2xl lg:text-3xl xl:text-[2.7rem]/[3.5rem] font-bold">Healthy Bone Broth Ramen (Quick & Easy)</h2>
+            <h2 className="text-[#3F3A3A] text-xl md:text-2xl lg:text-3xl xl:text-[2.7rem]/[3.5rem] font-bold">Crispy Chicken Burger</h2>
             <div className="w-10 xl:w-20 h-2 border-b border-[#6F6A40]"></div>
-            <p className="text-[#3F3A3A] mt-3 mb-8 text-sm xl:text-xl">Quick + Easy Chicken Bone Broth Ramen Healthy chicken ramen in a hurry? That&apos;s right!</p>
+            <p className="text-[#3F3A3A] mt-3 mb-8 text-sm xl:text-xl">A burger is a sandwich consisting of one or more cooked patties of ground meat, usually beef, placed inside a sliced bread roll or bun.</p>
             <Link to="/recipes/list" className="bg-primary text-xs px-[1.35rem] py-3 xl:px-[2.65rem] xl:py-4 rounded xl:rounded-md text-white tracking-wider xl:tracking-widest active:ring md:w-28 xl:w-40">
               Learn more
             </Link>
@@ -147,7 +147,9 @@ function Home() {
                 <div key={recipe.id} className="relative rounded-md overflow-hidden bg-white shadow-md">
                   <Link to={`/recipes/detail/${recipe.id}`} className="block">
                     <img src={recipe.image} alt={recipe.title} className="object-cover w-full h-56 rounded-t-md" />
-                    <div className="w-52 h-8 absolute left-0 bottom-3 bg-black bg-opacity-60  text-white  font-bold text-xl xl:text-xl px-5 ">{recipe.title}</div>
+                    <div className="w-auto h-auto rounded-r-sm absolute left-0 bottom-3 bg-black bg-opacity-60 text-white font-bold text-xl xl:text-xl px-5">
+                      <p>{recipe.title}</p>
+                    </div>
                   </Link>
                 </div>
               ))}
