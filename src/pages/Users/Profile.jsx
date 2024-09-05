@@ -529,7 +529,7 @@ function Profile() {
           <div className="bg-white p-6 rounded-md w-full sm:w-96">
             {editType === "profile" && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
+                <h2 className="text-2xl font-bold mb-4">Update Profile</h2>
                 <form onSubmit={handleEditFormSubmit}>
                   <div className="mb-4">
                     <label htmlFor="name" className="block text-sm font-medium text-gray-600">
@@ -555,7 +555,7 @@ function Profile() {
 
             {editType === "image" && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">Edit Profile Image</h2>
+                <h2 className="text-2xl font-bold mb-4">Update Profile Image</h2>
                 <div className="mb-6 flex items-center justify-center">{editFormData.image && <img src={URL.createObjectURL(editFormData.image)} alt="Preview" className="mt-2 w-full h-36 object-cover rounded-md border" />}</div>
                 <form onSubmit={handleEditFormSubmit}>
                   <div className="mb-6">
@@ -578,7 +578,7 @@ function Profile() {
 
             {editType === "password" && (
               <div>
-                <h2 className="text-2xl font-bold mb-4">Edit Password</h2>
+                <h2 className="text-2xl font-bold mb-4">Update Password</h2>
                 <form onSubmit={handleEditFormSubmit}>
                   <div className="mb-4">
                     <label htmlFor="oldPassword" className="block text-sm font-medium text-gray-600">

@@ -26,7 +26,7 @@
 
 - **View Recipes**: Browse through a variety of recipes shared by users.
 - **Add New Recipes**: Users can create and share their own recipes with the community.
-- **Edit Recipes**: Easily update and modify existing recipes.
+- **Update Recipes**: Easily update and modify existing recipes.
 - **Delete Recipes**: Remove recipes that are no longer needed.
 - **Review Recipes**: Users can leave reviews and feedback on recipes they have tried.
 - **Search Recipes**: Quickly find specific recipes using keywords or ingredients.
@@ -140,7 +140,7 @@ VITE_API_URL = "YOUR_API_URL"
       <img src="https://github.com/user-attachments/assets/70e05a92-c52b-4471-a970-df143389b8a2" alt="Profile Page" width="100%">
     </td>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/b85d0b9e-8467-40b2-8513-99fc39c0984d" alt="Update Profile Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/266fcaec-0a4e-4e00-927c-5ac15a6207a8" alt="Update Profile Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -154,12 +154,12 @@ VITE_API_URL = "YOUR_API_URL"
       <img src="https://github.com/user-attachments/assets/913028e4-022e-4c55-ba13-4776e09696a5" alt="Add Recipes Page" width="100%">
     </td>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/43239dca-6cf9-41ef-8df5-3138d7499701" alt="Edit Recipes Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/43239dca-6cf9-41ef-8df5-3138d7499701" alt="Update Recipes Page" width="100%">
     </td>
   </tr>
   <tr>
     <td align="center" style="padding: 10px 0;"><strong>Add Recipes Page</strong></td>
-    <td align="center" style="padding: 10px 0;"><strong>Edit Recipes Page</strong></td>
+    <td align="center" style="padding: 10px 0;"><strong>Update Recipes Page</strong></td>
   </tr>
 
   <!-- Row 4 -->
@@ -210,7 +210,7 @@ VITE_API_URL = "YOUR_API_URL"
       <img src="https://github.com/user-attachments/assets/8425dd47-9551-46fd-a745-e6c6d57a3e5f" alt="Liked Recipes Page" width="100%">
     </td>
     <td width="50%" style="vertical-align: top;">
-      <img src="https://github.com/user-attachments/assets/4bd11728-24a8-4a10-b6f1-97b041702780" alt="Update Image Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/dcbd0de3-c5d4-4256-a28f-2fabe02fc7df" alt="Update Image Page" width="100%">
     </td>
   </tr>
   <tr>
@@ -221,7 +221,7 @@ VITE_API_URL = "YOUR_API_URL"
   <!-- Row 7 -->
   <tr>
     <td colspan="2">
-      <img src="https://github.com/user-attachments/assets/8ba74339-a0fd-43ea-95f8-e2eb5d8f98ef" alt="Update Password Page" width="100%">
+      <img src="https://github.com/user-attachments/assets/9baa7672-44e0-4f55-ba52-a6c220eb3292" alt="Update Password Page" width="100%">
     </td>
   </tr>
   <tr>
